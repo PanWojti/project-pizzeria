@@ -84,6 +84,7 @@
       thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
+      thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
     }
     initAccordion(){
       const thisProduct = this;
@@ -158,6 +159,28 @@
             /* subtract price of option from variable price */
             price = price - option.price;
           /* END ELSE IF: if option is not selected and option is default */
+          }
+          /* Save all images of option to const optionImages */
+          const optionImages = thisProduct.imageWrapper.querySelectorAll('.' + paramId + '-' + optionId);
+          /* START IF: If option is selected */
+          if (optionSelected){
+            /* START LOOP: for every image in optionImages */
+            for(let image of optionImages){
+              /* Image for option should get class active (classNames.menuProduct.imageVisible)*/
+              image.classList.add(classNames.menuProduct.imageVisible);
+            /* END LOOP: for every image in optionImages */
+            }
+          /* END IF: */
+          }
+          /* START ELSE: */
+          else {
+            /* START LOOP: for every image in optionImages */
+            for(let image of optionImages){
+              /* Image for option should have class active removed (classNames.menuProduct.imageVisible)*/
+              image.classList.remove(classNames.menuProduct.imageVisible);
+            /* END LOOP: for every image in optionImages */
+            }
+          /* END ELSE: */
           }
         /* END LOOP: for each optionID in param.options */
         }
