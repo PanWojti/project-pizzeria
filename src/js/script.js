@@ -166,6 +166,8 @@
       thisProduct.cartButton.addEventListener('click', function(event){
         event.preventDefault();
         thisProduct.processOrder();
+        thisProduct.addToCart();
+        //console.log('cart button clicked');
       });
     }
     processOrder(){
@@ -173,6 +175,7 @@
       //console.log('processOrder');
       /* read all data from the form (using utils.serializeFormToObject) and save it to const formData */
       const formData = utils.serializeFormToObject(thisProduct.form);
+      thisProduct.params = {};
       /* set variable price to equal thisProduct.data.price */
       let price = thisProduct.data.price;
       /* START LOOP: for each paramId in thisProduct.data.params */
@@ -200,14 +203,32 @@
           const optionImages = thisProduct.imageWrapper.querySelectorAll('.' + paramId + '-' + optionId);
           /* START IF: If option is selected */
           if (optionSelected){
+            /* check if this parameter hasn't already been added to params */
+            if(!thisProduct.params[paramId]){
+              /* add parameter label and empty object - options */
+              thisProduct.params[paramId]={
+                label: param.label,
+                options: {},
+              };
+            }
+            /* Add option to option object with its label as value */
+            thisProduct.params[paramId].options[optionId] = option.label;
+
             /* START LOOP: for every image in optionImages */
+
             for(let image of optionImages){
+
               /* Image for option should get class active (classNames.menuProduct.imageVisible)*/
+
               image.classList.add(classNames.menuProduct.imageVisible);
             /* END LOOP: for every image in optionImages */
+
             }
+
           /* END IF: */
+
           }
+
           /* START ELSE: */
           else {
             /* START LOOP: for every image in optionImages */
@@ -223,9 +244,11 @@
       /* END LOOP: for each paramId in thisProduct.data.params */
       }
       /* Multiply price by amount */
-      price *= thisProduct.amountWidget.value;
+      thisProduct.priceSingle = price;
+      thisProduct.price = thisProduct.priceSingle * thisProduct.amountWidget.value;
       /* set the contents of thisProductpriceElem to be the value of variable price */
-      thisProduct.priceElem.innerHTML = price;
+      thisProduct.priceElem.innerHTML = thisProduct.price;
+      console.log('thisProduct.params: ', thisProduct.params);
     }
     initAmountWidget(){
       const thisProduct = this;
@@ -236,6 +259,14 @@
         //console.log('updated happened');
       });
 
+    }
+    addToCart(){
+      const thisProduct = this;
+
+      thisProduct.name = thisProduct.data.name;
+      thisProduct.amount = thisProduct.amountWidget.value;
+      app.cart.add(thisProduct);
+      //console.log('addToCart executed');
     }
   }
 
@@ -309,6 +340,7 @@
       thisCart.dom.wrapper = element;
       thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
       console.log('thisCart.dom.toggleTrigger: ', thisCart.dom.toggleTrigger);
+      thisCart.dom.productList = document.querySelector(select.cart.productList);
     }
     initActions(){
       const thisCart = this;
@@ -316,6 +348,19 @@
       thisCart.dom.toggleTrigger.addEventListener('click', function(){
         thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
       });
+    }
+    add(menuProduct){
+      const thisCart = this;
+
+      /* generate HTML based on template */
+      const generatedHTML = templates.cartProduct(menuProduct);
+      console.log('generatedHTML: ', generatedHTML);
+      /* create element using utils.createElementFromHTML */
+      const generatedDOM = utils.createDOMFromHTML(generatedHTML);
+      /* add element to cart */
+      thisCart.dom.productList.appendChild(generatedDOM);
+
+      console.log('adding Product: ', menuProduct);
     }
   }
 
