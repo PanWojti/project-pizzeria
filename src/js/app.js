@@ -2,8 +2,9 @@
 import {settings, select, classNames} from './settings.js';
 import Product from './components/Product.js';
 import Cart from './components/Cart.js';
+import Booking from './components/Booking.js';
 
-const app = {
+export const app = {
   initPages: function(){
     const thisApp = this;
     /* Find all sub-pages containers */
@@ -68,6 +69,14 @@ const app = {
       new Product(thisApp.data.products[productData].id, thisApp.data.products[productData]);
     }
   },
+  initBooking: function(){
+    const thisApp = this;
+
+    thisApp.booking = document.querySelector(select.containerOf.booking);
+    console.log('thisApp.booking: ', thisApp.booking);
+
+    new Booking(thisApp.booking);
+  },
   initData: function(){
     const thisApp = this;
 
@@ -99,6 +108,7 @@ const app = {
     thisApp.initPages();
     thisApp.initData();
     thisApp.initCart();
+    thisApp.initBooking();
   },
   initCart: function(){
     const thisApp = this;
