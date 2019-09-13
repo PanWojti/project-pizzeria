@@ -6,12 +6,41 @@ import Cart from './components/Cart.js';
 const app = {
   initPages: function(){
     const thisApp = this;
-
+    /* Find all sub-pages containers */
     thisApp.pages = document.querySelector(select.containerOf.pages).children;
-
+    /* Find all sub-pages links */
     thisApp.navLinks = document.querySelectorAll(select.nav.links);
 
-    thisApp.activatePage(thisApp.pages[0].id);
+    /* Code below created to prevent opening default page every time the page is reloaded */
+
+    /* Create const from page URL hash in order to know which page should be active by default */
+    const idFromHash = window.location.hash.replace('#/', '');
+    /* create const with default page id in case no sub-page match the page URL hash */
+    let pageMatchingHash = thisApp.pages[0].id;
+    /* Check if any of the sub-pages id match the hash taken from the page URL */
+    for(let page of thisApp.pages){
+      if(page.id == idFromHash){
+        pageMatchingHash = page.id;
+        break;
+      }
+    }
+    /* call activatePage with appropriate page id */
+    thisApp.activatePage(pageMatchingHash);
+    /* for all sub-pages links listen for click */
+    for(let link of thisApp.navLinks){
+
+      link.addEventListener('click', function(event){
+        const clickedElement = this;
+        event.preventDefault();
+
+        /* get page id from href attribute */
+        const id = clickedElement.getAttribute('href').replace('#', '');
+        /* run thisApp.activatePage with that id */
+        thisApp.activatePage(id);
+        /* Change URL hash to id of clicked sub-page link*/
+        window.location.hash = '#/' + id;
+      });
+    }
 
   },
   activatePage: function(pageId){
