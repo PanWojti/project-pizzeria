@@ -13,11 +13,30 @@ class Booking{
     thisBooking.render(element);
     thisBooking.initWidgets();
     thisBooking.getData();
+    thisBooking.reserve();
   }
-  getData(){
+
+  reserve(){
     const thisBooking = this;
 
+    const tables = thisBooking.dom.tables;
+    let bookedTable = '';
+
+    for(let table of tables){
+      table.addEventListener('click', function(){
+        table.classList.add(classNames.booking.tableBooked);
+        bookedTable = table.getAttribute(settings.booking.tableIdAttribute);
+        thisBooking.table = bookedTable;
+      });
+    }
+
+  }
+
+  getData(){
+    const thisBooking = this;
+    /* set start date parameters to construct urls that will be later used to get data from API */
     const startDateParam = settings.db.dateStartParamKey + '=' + utils.dateToStr(thisBooking.datePicker.minDate);
+    /* set end date parameters to construct urls that will be later used to get data from API */
     const endDateParam = settings.db.dateEndParamKey   + '=' + utils.dateToStr(thisBooking.datePicker.maxDate);
 
     const params = {
@@ -36,7 +55,7 @@ class Booking{
       ],
     };
 
-    //console.log('getData params: ', params);
+    /* Make urls for getting booking and events data from API */
 
     const urls = {
       booking:       settings.db.url + '/' + settings.db.booking
@@ -63,9 +82,6 @@ class Booking{
         eventsRepeatResponse.json(),
       ]);
     }).then(function([bookings, eventsCurrent, eventsRepeat]){
-      //console.log(bookings);
-      //console.log(eventsCurrent);
-      //console.log(eventsRepeat);
       thisBooking.parseData(bookings, eventsCurrent, eventsRepeat);
     });
   }
@@ -100,13 +116,13 @@ class Booking{
 
   makeBooked(date, hour, duration, table){
     const thisBooking = this;
-
+    /* If there is no booking for a selected date then create an empty object */
     if(typeof thisBooking.booked[date] == 'undefined'){
       thisBooking.booked[date] = {};
     }
-
+    /* convert selected start hour to number */
     const startHour = utils.hourToNumber(hour);
-
+    /* If there is no booking for selected date and hour then create an empty array */
     if(typeof thisBooking.booked[date][startHour] == 'undefined'){
       thisBooking.booked[date][startHour] = [];
     }
