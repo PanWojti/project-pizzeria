@@ -95,7 +95,7 @@ class Cart{
 
     /* generate HTML based on template */
     const generatedHTML = templates.cartProduct(menuProduct);
-    //console.log('generatedHTML: ', generatedHTML);
+
     /* create element using utils.createElementFromHTML */
     const generatedDOM = utils.createDOMFromHTML(generatedHTML);
     /* add element to cart */

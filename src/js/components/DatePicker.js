@@ -15,14 +15,15 @@ class DatePicker extends BaseWidget{
   initPlugin(){
     const thisWidget = this;
 
+    /* create minDate object with value equal to today's date */
     thisWidget.minDate = new Date(thisWidget.value);
-    console.log('thisWidget.minDate: ', thisWidget.minDate);
+    /* create maxDate object with value equal to today's date plus 14 days*/
     thisWidget.maxDate = utils.addDays(thisWidget.minDate, settings.datePicker.maxDaysInFuture);
-    console.log('thisWidget.maxDate: ', thisWidget.maxDate);
+
     flatpickr(thisWidget.dom.input, {
-      defaultDate: utils.dateToStr(thisWidget.minDate),
-      minDate: utils.dateToStr(thisWidget.minDate),
-      maxDate: utils.dateToStr(thisWidget.maxDate),
+      defaultDate: thisWidget.minDate,
+      minDate: thisWidget.minDate,
+      maxDate: thisWidget.maxDate,
       'locale': {
         'firstDayOfWeek': 1 // start week on Monday
       },
@@ -40,7 +41,7 @@ class DatePicker extends BaseWidget{
     });
   }
   parseValue(value){
-    return parseInt(value);
+    return value;
   }
   isValid(){
     return true;

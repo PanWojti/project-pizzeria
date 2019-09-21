@@ -14,42 +14,138 @@ class Booking{
     thisBooking.initWidgets();
     thisBooking.getData();
     thisBooking.reserve();
+    thisBooking.initActions();
   }
 
   reserve(){
     const thisBooking = this;
     /* define constant with all tables in restaurant */
     const tables = thisBooking.dom.tables;
-
-    let bookedTable = '';
     /* Check if any table is clicked */
     for(let table of tables){
-      table.addEventListener('click', function(){
-        /* Add class booked */
-        table.classList.add(classNames.booking.tableBooked);
-        /* Get attribute (number) of clicked table */
-        bookedTable = table.getAttribute(settings.booking.tableIdAttribute);
-        /* Save booked table to thisBooking object */
-        thisBooking.table = bookedTable;
+      table.addEventListener('click', function(event){
+        event.preventDefault();
+        /* if table is not booked yet */
+        if(!table.classList.contains(classNames.booking.tableBooked)){
+          /* Add class reserved - not booked, so that table has different color */
+          table.classList.toggle(classNames.booking.tableReserved);
+          /* get table attribute - number */
+          thisBooking.reservedTable = parseInt(table.getAttribute(settings.booking.tableIdAttribute));
+          /* if table is already booked */
+        } else {
+          return alert('This table is not available');
+        }
+
+        const allReservedTables = document.querySelectorAll(select.booking.tablesReserved);
+        /* This code prevents selecting multiple tables */
+        for(let reservedTable of allReservedTables){
+
+          if(reservedTable !== table){
+            reservedTable.classList.remove(classNames.booking.tableReserved);
+          }
+        }
+      });
+      /* Event listener to remove reserved class from table when date input is updated by user */
+      thisBooking.dom.datePicker.addEventListener('updated', function(){
+        table.classList.remove(classNames.booking.tableReserved);
+      });
+      /* Event listener to remove reserved class from table when hour slider is updated by user */
+      thisBooking.dom.hourPicker.addEventListener('updated', function(){
+        table.classList.remove(classNames.booking.tableReserved);
       });
     }
-    /* Add event listener for hour selection slider to listen for change */
-    thisBooking.hourPicker.dom.input.addEventListener('input', function(){
-      /* if there is a table booked (clicked) */
-      if(thisBooking.table.length > 0){
-        /* Remove class booked from previosuly clicked table */
-        tables[thisBooking.table-1].classList.remove(classNames.booking.tableBooked);
+
+    thisBooking.starters = [];
+
+    const starters = thisBooking.dom.starters;
+    /* Add checked starter to thisBooking.starters or remove it if un-checked */
+    for(let starter of starters){
+      starter.addEventListener('change', function(){
+        if(this.checked){
+          thisBooking.starters.push(starter.value);
+        } else {
+          thisBooking.starters.splice(thisBooking.starters.indexOf(starter.value, 1));
+        }
+      });
+    }
+  }
+
+  /* Complete all booking data in one object and send to API */
+  sendBooking(){
+    const thisBooking = this;
+
+    /* const with url of appropriate API endpoint */
+    const url = settings.db.url + '/' + settings.db.booking;
+
+    /* Object (booking) being sent to API */
+    const reservation = {
+      id: '',
+      date: thisBooking.datePicker.dom.input.value,
+      hour: thisBooking.hourPicker.value,
+      table: parseInt(thisBooking.reservedTable),
+      duration: thisBooking.hoursAmount.value,
+      ppl: thisBooking.peopleAmount.value,
+      phone: thisBooking.dom.phone.value,
+      address: thisBooking.dom.address.value,
+      starters: thisBooking.starters,
+    };
+
+
+    /* Specify options for posting order to API */
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(reservation),
+    };
+    /* Post booking to server */
+    fetch(url, options)
+      .then(function(response){
+        return response.json();
+      })
+      .then(function(parsedResponse){
+        console.log('parsedResponse: ', parsedResponse);
+        thisBooking.reservedTable = undefined;
+        thisBooking.getData();
+      });
+
+    return alert('Selected table has been successfully booked!');
+  }
+
+  /* method that removes Reserved class from selected table after making a booking */
+  refreshTable(){
+    const thisBooking = this;
+
+    const tables = thisBooking.dom.tables;
+
+    for(let table of tables){
+      table.classList.remove(classNames.booking.tableReserved);
+    }
+  }
+
+  initActions(){
+    const thisBooking = this;
+    /* Actions to be executed after clicking submit button */
+    thisBooking.dom.bookingForm.addEventListener('submit', function(event){
+      event.preventDefault();
+
+      if(!thisBooking.reservedTable){
+        return alert('Please choose a table');
+      }else if (!thisBooking.dom.phone.value){
+        return alert('Please enter your phone number');
+      }else if (!thisBooking.dom.address.value){
+        return alert('Please enter your address');
       }
-    });
-    /* Add event listener for date selection input to listen for change */
-    thisBooking.datePicker.dom.input.addEventListener('input', function(){
-      /* if there is a table booked (clicked) */
-      if(thisBooking.table.length > 0){
-        /* Remove class booked from previosuly clicked table */
-        tables[thisBooking.table-1].classList.remove(classNames.booking.tableBooked);
-      }
+      /* Send booking to API */
+      thisBooking.sendBooking();
+      /* Refresh tables */
+      thisBooking.refreshTable();
+      /* reset booking form */
+      thisBooking.dom.bookingForm.reset();
     });
   }
+
   /* get filetered data about bookings from API */
   getData(){
     const thisBooking = this;
@@ -144,7 +240,6 @@ class Booking{
       }
     }
 
-    //console.log('thisBooking.booked: ', thisBooking.booked);
     thisBooking.updateDOM();
   }
 
@@ -157,13 +252,6 @@ class Booking{
     }
     /* convert selected start hour - e.g. 12:30 from API - to number we need in thisBooking.booked object - 12.5 */
     const startHour = utils.hourToNumber(hour);
-    /* If there is no booking for selected date and hour then create an empty array */
-    if(typeof thisBooking.booked[date][startHour] == 'undefined'){
-      thisBooking.booked[date][startHour] = [];
-    }
-    /* Append table number to array in thisBooking.booked object for selected date and hour */
-    /* In thisBooking.booked object date is a key, for each date values are hours. Hours are keys and for each hour the value is an array with table numbers */
-    thisBooking.booked[date][startHour].push(table);
 
     /* Loop to book a table for entire duration of the booking, not just the starting hour */
     for (let hourBlock = startHour; hourBlock<startHour+duration; hourBlock +=0.5){
@@ -229,11 +317,25 @@ class Booking{
     thisBooking.dom.wrapper = element;
     /* insert booking HTML generated from the template into booking wrapper */
     thisBooking.dom.wrapper.innerHTML = generatedHTML;
+    /* save people-amount element found in wrapper */
     thisBooking.dom.peopleAmount = thisBooking.dom.wrapper.querySelector(select.booking.peopleAmount);
+    /* save booking duration element found in wrapper */
     thisBooking.dom.hoursAmount = thisBooking.dom.wrapper.querySelector(select.booking.hoursAmount);
+    /* save booking date element found in wrapper */
     thisBooking.dom.datePicker = thisBooking.dom.wrapper.querySelector(select.widgets.datePicker.wrapper);
+    /* save booking hour element found in wrapper */
     thisBooking.dom.hourPicker = thisBooking.dom.wrapper.querySelector(select.widgets.hourPicker.wrapper);
+    /* save all table elements found in wrapper */
     thisBooking.dom.tables = thisBooking.dom.wrapper.querySelectorAll(select.booking.tables);
+    /* save booking form element found in wrapper */
+    thisBooking.dom.bookingForm = thisBooking.dom.wrapper.querySelector(select.booking.bookingForm);
+    //console.log('thisBooking.dom.bookingForm: ', thisBooking.dom.bookingForm);
+    /* save phone input element found in wrapper */
+    thisBooking.dom.phone = thisBooking.dom.wrapper.querySelector(select.booking.phone);
+    /* save address input element found in wrapper */
+    thisBooking.dom.address = thisBooking.dom.wrapper.querySelector(select.booking.address);
+    /* save starters checkbox element found in wrapper */
+    thisBooking.dom.starters = thisBooking.dom.wrapper.querySelectorAll(select.booking.starters);
   }
   initWidgets(){
     const thisBooking = this;
