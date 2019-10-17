@@ -1,0 +1,167 @@
+.home-page {
+  margin: ($base-size * 3.5) auto;
+  padding: ($base-size * 6) ($base-size * 4);
+  background: $color-light;
+  border-bottom: 1px solid lighten($color-dark, 70%);
+  border-radius: $radius;
+}
+
+.wrapper {
+  display: flex;
+  width: 600px;
+  justify-content: center;
+}
+
+.photo-1 {
+  //object-fit: cover;
+  text-align: center;
+  background-image: url('../../images/home/pizza-1.jpg');
+  background-position: center;
+  background-size: cover;
+  color: #ffffff;
+  border-radius: $radius;
+  margin: 0 3px 0 0;
+  padding: 0;
+  text-transform: uppercase;
+  height: 120px;
+  width: 297px;
+  line-height: 80px;
+  font-size: 24px;
+}
+
+.photo-2 {
+  //object-fit: cover;
+  text-align: center;
+  background-image: url('../../images/home/pizza-2.jpg');
+  background-position: center;
+  background-size: cover;
+  color: #ffffff;
+  border-radius: $radius;
+  margin: 0 0 0 3px;
+  padding: 0;
+  text-transform: uppercase;
+  height: 120px;
+  width: 297px;
+  line-height: 80px;
+  font-size: 24px;
+}
+
+.hours {
+  text-align: center;
+  justify-content: center;
+  background-color: #FA8072;
+  border-radius: $radius;
+  margin: $base-size/2 0;
+  color: #ffffff;
+  text-transform: uppercase;
+  height: 120px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.photos {
+  margin: $base-size/2 0;
+}
+
+.photo-3 {
+  background-image: url('../../images/home/pizza-3.jpg');
+  background-position: center;
+  background-size: cover;
+  height: 190px;
+  width: 190px;
+  border-radius: $radius;
+}
+
+.photo-4 {
+  background-image: url('../../images/home/pizza-4.jpg');
+  background-position: center;
+  background-size: cover;
+  height: 190px;
+  width: 190px;
+  border-radius: $radius;
+  margin-right: 12px;
+}
+
+.photo-5 {
+  background-image: url('../../images/home/pizza-5.jpg');
+  background-position: center;
+  background-size: cover;
+  height: 190px;
+  width: 190px;
+  border-radius: $radius;
+}
+
+.photo-6 {
+  background-image: url('../../images/home/pizza-6.jpg');
+  background-position: center;
+  background-size: cover;
+  height: 190px;
+  width: 190px;
+  border-radius: $radius;
+  margin-left: 12px;
+}
+
+.photo-7 {
+  background-image: url('../../images/home/pizza-7.jpg');
+  background-position: center;
+  background-size: cover;
+  height: 190px;
+  width: 190px;
+  border-radius: $radius;
+  margin-right: 12px;
+}
+
+.photo-8 {
+  background-image: url('../../images/home/pizza-8.jpg');
+  background-position: center;
+  background-size: cover;
+  height: 190px;
+  width: 190px;
+  border-radius: $radius;
+}
+
+.photo-9 {
+  background-image: url('../../images/home/pizza-9.jpg');
+  background-position: center;
+  background-size: cover;
+  height: 190px;
+  width: 190px;
+  border-radius: $radius;
+  margin-left: 12px;
+}
+
+.wrapper-quotes {
+  margin: 100px 0 40px 0;
+}
+
+.quotes {
+  color: black;
+  width: 400px;
+  padding-left: 40px;
+  display: none;
+
+  &.active {
+    display: block;
+  }
+}
+
+.gallery {
+  margin: 12px 0;
+}
+
+.dot {
+  background-color: lightgrey;
+  height: 10px;
+  width: 10px;
+  border-radius: 5px;
+  margin: 0 7px;
+
+  &.active {
+    background-color: grey;
+  }
+}
+
+.dots {
+  justify-content: center;
+  margin-bottom: 70px;
+}
