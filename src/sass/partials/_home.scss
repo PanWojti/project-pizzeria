@@ -1,3 +1,4 @@
+
 .home-page {
   margin: ($base-size * 3.5) auto;
   padding: ($base-size * 6) ($base-size * 4);
@@ -22,11 +23,31 @@
   border-radius: $radius;
   margin: 0 3px 0 0;
   padding: 0;
-  text-transform: uppercase;
   height: 120px;
   width: 297px;
-  line-height: 80px;
+}
+
+.photo-1 p:nth-of-type(2) {
+  display: none;
+}
+
+.photo-1:hover p:nth-of-type(2) {
+  display: block;
+}
+
+.photo-1 p {
+  transition: all 1s;
+}
+
+.photo-1:hover p {
+  transform: translateY(-20px);
+}
+
+.photo-1 p:first-of-type {
   font-size: 24px;
+  text-transform: uppercase;
+  margin-top: 44px;
+  margin-bottom: 10px;
 }
 
 .photo-2 {
@@ -39,17 +60,37 @@
   border-radius: $radius;
   margin: 0 0 0 3px;
   padding: 0;
-  text-transform: uppercase;
   height: 120px;
   width: 297px;
-  line-height: 80px;
+}
+
+.photo-2 p:nth-of-type(2) {
+  display: none;
+}
+
+.photo-2:hover p:nth-of-type(2) {
+  display: block;
+}
+
+.photo-2 p {
+  transition: all 1s;
+}
+
+.photo-2:hover p {
+  transform: translateY(-20px);
+}
+
+.photo-2 p:first-of-type {
   font-size: 24px;
+  text-transform: uppercase;
+  margin-top: 44px;
+  margin-bottom: 10px;
 }
 
 .hours {
   text-align: center;
   justify-content: center;
-  background-color: #FA8072;
+  background-color: #FF6B6B;
   border-radius: $radius;
   margin: $base-size/2 0;
   color: #ffffff;
@@ -57,6 +98,9 @@
   height: 120px;
   padding-top: 20px;
   padding-bottom: 20px;
+  display: block;
+  width: 600px;
+  justify-content: center;
 }
 
 .photos {
@@ -164,4 +208,48 @@
 .dots {
   justify-content: center;
   margin-bottom: 70px;
+}
+
+.insta a {
+  color: #FF6B6B;
+}
+
+.hours p:first-of-type {
+  font-size: 20px;
+  margin: 10px 0 0 0;
+}
+
+.hours p:nth-of-type(2) {
+  margin: 5px 0 0 0;
+}
+
+a {
+  display: none;
+
+  i {
+    font-size: 30px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    color: #ffffff;
+    text-align: center;
+    margin: 85px 10px;
+
+  }
+}
+
+i:hover {
+  color: #FF6B6B;
+}
+
+.icons {
+  padding: 0 40px;
+}
+
+.photo:hover {
+  filter: brightness(50%);
+
+  a {
+    display: inline;
+  }
 }
