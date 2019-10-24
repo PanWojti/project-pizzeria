@@ -191,6 +191,7 @@
 
 .gallery {
   margin: 12px 0;
+  position: relative;
 }
 
 .dot {
@@ -224,32 +225,63 @@
 }
 
 a {
-  display: none;
-
   i {
-    font-size: 30px;
-    width: 30px;
-    height: 30px;
-    line-height: 30px;
-    color: #ffffff;
+    font-size: 25px;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    color: white;
     text-align: center;
-    margin: 85px 10px;
-
+    margin: 0 5px;
+    pointer-events: auto;
   }
 }
 
 i:hover {
   color: #FF6B6B;
+  //filter: saturate(200%);
+  //filter: brightness(120%);
 }
 
-.icons {
-  padding: 0 40px;
+.photo {
+  position: relative;
 }
 
 .photo:hover {
   filter: brightness(50%);
+}
 
-  a {
-    display: inline;
-  }
+.icons {
+  position: absolute;
+  pointer-events: none;
+}
+
+.icons-4 {
+  top: 85px;
+  left: 60px;
+}
+
+.icons-5 {
+  top: 85px;
+  left: 265px;
+}
+
+.icons-6 {
+  top: 85px;
+  left: 470px;
+}
+
+.icons-7 {
+  top: 85px;
+  left: 60px;
+}
+
+.icons-8 {
+  top: 85px;
+  left: 265px;
+}
+
+.icons-9 {
+  top: 85px;
+  left: 470px;
 }
