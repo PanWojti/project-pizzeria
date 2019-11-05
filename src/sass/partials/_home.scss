@@ -234,6 +234,7 @@ a {
     text-align: center;
     margin: 0 5px;
     pointer-events: auto;
+    transition: all 0.5s;
   }
 }
 
@@ -247,41 +248,21 @@ i:hover {
   position: relative;
 }
 
-.photo:hover {
-  filter: brightness(50%);
-}
-
 .icons {
   position: absolute;
-  pointer-events: none;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.icons-4 {
-  top: 85px;
-  left: 60px;
+.overlay {
+  background-color: black;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  transition: all 0.5s;
 }
 
-.icons-5 {
-  top: 85px;
-  left: 265px;
-}
-
-.icons-6 {
-  top: 85px;
-  left: 470px;
-}
-
-.icons-7 {
-  top: 85px;
-  left: 60px;
-}
-
-.icons-8 {
-  top: 85px;
-  left: 265px;
-}
-
-.icons-9 {
-  top: 85px;
-  left: 470px;
+.photo:hover .overlay {
+  opacity: 50%;
 }
