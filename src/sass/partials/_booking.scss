@@ -214,3 +214,15 @@
   @include flex(row, flex-start, space-between);
   margin: ($base-size * 4) auto;
 }
+
+.rangeSlider__slots {
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+}
+
+.rangeSlider__slot {
+  width: 3.846154%;
+  height: 12px;
+}
