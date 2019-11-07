@@ -241,6 +241,45 @@ class Booking{
     }
 
     thisBooking.updateDOM();
+    console.log('thisBooking.booked: ', thisBooking.booked['2019-11-07']['14'].length);
+    if(typeof thisBooking.booked['2019-11-07']['14'] == 'undefined'){
+      console.log('all tables for this hour are available');
+      const slot = document.querySelector('.rangeSlider__slot__1500');
+      slot.classList.add('empty');
+      const thisDate = document.querySelector('.flatpickr-input');
+      const thisDateToday = thisDate.value;
+      console.log('thisDateToday: ', thisDateToday);
+    } else {
+      console.log('at least one table for this hour is booked');
+    }
+
+    const slots = document.querySelectorAll('.rangeSlider__slot');
+    console.log('slots: ', slots);
+    const slotsArray = Array.from(slots);
+    console.log('slotsArray: ', slotsArray);
+
+    const thisDate = document.querySelector('.flatpickr-input');
+    const thisDateToday = thisDate.value;
+
+    for (let i=0; i<=23; i+=1) {
+      const hour = (12 + 0.5*i) ;
+      console.log('hour: ', hour);
+      if(typeof thisBooking.booked[thisDateToday][hour] == 'undefined') {
+        console.log('all tables are empty');
+        slotsArray[i].classList.add('empty');
+      } else if (thisBooking.booked[thisDateToday][hour].length == 3) {
+        console.log('all tables are occupied');
+        slotsArray[i].classList.add('busy');
+      } else if (thisBooking.booked[thisDateToday][hour].length == 2) {
+        console.log('only one table is empty');
+        slotsArray[i].classList.add('medium');
+      } else if (thisBooking.booked[thisDateToday][hour].length == 1) {
+        console.log('two tables are empty');
+        slotsArray[i].classList.add('empty');
+      }
+
+    }
+
   }
 
   /* Method that saves booking and event data to object thisBooking.booked */

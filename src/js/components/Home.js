@@ -47,19 +47,19 @@ function dotsCarousel(){
     quote2.classList.add('active');
     dot1.classList.remove('active');
     dot2.classList.add('active');
-    console.log('dot1 executed');
+    //console.log('dot1 executed');
   } else if (quote2.classList.contains('active')) {
     quote2.classList.remove('active');
     quote3.classList.add('active');
     dot2.classList.remove('active');
     dot3.classList.add('active');
-    console.log('dot2 executed');
+    //console.log('dot2 executed');
   } else if (quote3.classList.contains('active')) {
     quote3.classList.remove('active');
     quote1.classList.add('active');
     dot3.classList.remove('active');
     dot1.classList.add('active');
-    console.log('dot3 executed');
+    //console.log('dot3 executed');
   }
 }
 

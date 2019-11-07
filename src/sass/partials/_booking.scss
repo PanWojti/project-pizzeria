@@ -78,6 +78,7 @@
       height: ($base-size * 2);
       top: -6px;
       background: $color-dark;
+      z-index: 8;
     }
 
   }
@@ -223,6 +224,18 @@
 }
 
 .rangeSlider__slot {
-  width: 3.846154%;
+  width: 4.16666667%;
   height: 12px;
+}
+
+.busy {
+  background-color: $color-slider-busy;
+}
+
+.medium {
+  background-color: $color-slider-medium;
+}
+
+.empty {
+  background-color: $color-slider-empty;
 }
